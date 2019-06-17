@@ -4,8 +4,8 @@ require 'rubygems'
 require 'active_support/core_ext/numeric/time'
 
 # e.g. ruby elvo.rb uk london 2018-09-02 2019-05-26
-@city = ARGV[0] || "uk"
-@country = ARGV[1] || "london"
+@country = ARGV[0] || "uk"
+@city = ARGV[1] || "london"
 @start_date = ARGV[2] || "2018-09-02"
 @end_date = ARGV[3] || "2019-05-26"
 
@@ -39,7 +39,7 @@ def scrape_resident_advisor_for(date)
   mechanize = Mechanize.new
   scraped_data = Hash.new
 
-  page = mechanize.get('https://www.residentadvisor.net/events/tk/istanbul/week/' + date)
+  page = mechanize.get("https://www.residentadvisor.net/events/#{@country}/#{@city}/week/#{date}")
 
   page.search('.event-item').each do |item|
     item_data = []
