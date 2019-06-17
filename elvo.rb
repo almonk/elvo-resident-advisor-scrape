@@ -3,22 +3,24 @@ require 'csv'
 require 'rubygems'
 require 'active_support/core_ext/numeric/time'
 
+# e.g. ruby elvo.rb uk london 2018-09-02 2019-05-26
+@city = ARGV[0] || "uk"
+@country = ARGV[1] || "london"
+@start_date = ARGV[2] || "2018-09-02"
+@end_date = ARGV[3] || "2019-05-26"
+
 def generate_dates
-  start_date = "2018-09-02"
-  end_date = "2019-05-01"
-  # end_date = "2018-09-18"
-  
-  start_time = Time.parse(start_date)
-  end_time = Time.parse(end_date)
+  parsed_start_date = Time.parse(@start_date)
+  parsed_end_date = Time.parse(@end_date)
 
   CSV.open("output/ra.csv", "w") do |csv|
     csv << ["Date", "Event name", "Venue", "Lineup"]
 
-    while start_time <= end_time
+    while parsed_start_date <= parsed_end_date
       # Format the date for RA
-      current_month = start_time.strftime("%m")
-      current_day = start_time.strftime("%d")
-      formatted_date = "#{start_time.year}-#{current_month}-#{current_day}"
+      current_month = parsed_start_date.strftime("%m")
+      current_day = parsed_start_date.strftime("%d")
+      formatted_date = "#{parsed_start_date.year}-#{current_month}-#{current_day}"
       
       puts "Checking listings for #{formatted_date}"
 
@@ -28,7 +30,7 @@ def generate_dates
       end
 
       # Now do next week
-      start_time = start_time + 1.week
+      parsed_start_date = parsed_start_date + 1.week
     end
   end
 end
